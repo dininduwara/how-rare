@@ -227,7 +227,7 @@ export default function App() {
                         faded: {innerRadius: 30, additionalRadius: -30, color: 'gray'},
                       },
                     ]}
-                    width={600}
+                    width={672}
                     height={200}
                 />
               </div>
@@ -249,7 +249,7 @@ export default function App() {
                       data: resultsByYear.map(a => a.value), color: '#6D28D9'
                     },
                   ]}
-                  width={600}
+                  width={672}
                   height={400}
               />
             </div>
@@ -270,7 +270,7 @@ export default function App() {
                       data:  resultsChangeByDataset.map(a => a.value), color: '#6D28D9'
                     },
                   ]}
-                  width={600}
+                  width={672}
                   height={200}
               />
             </div>
@@ -280,7 +280,7 @@ export default function App() {
             <h3 className='text-base mb-2'>
               Sources
             </h3>
-            <div className='flex flex-col gap-1 w-full items-start text-sm text-blue-600 hover:text-blue-700'>
+            <div className='grid grid-cols-2 gap-1 w-full items-start text-sm text-blue-600 hover:text-blue-700'>
               <a href='https://data.gov.au/dataset/ds-dga-292a071b-71f0-48c4-8617-c2ee0ca1ff2e/details?q='
                  target='_blank'
                  id='rd2021'>
@@ -304,12 +304,12 @@ export default function App() {
             </div>
           </div>
 
-          <div className='w-full text-gray-600 text-sm text-center mt-6 -mb-6'>
+          <div className='w-full text-gray-600 text-[0.78rem] text-center mt-6 -mb-6'>
             <span>
-              Built over a couple of afternoons with React by a Laravel developer. Expect bugs.
+              Built over a couple of afternoons with React by a Laravel developer. Expect only bugs, not how to cook the perfect stake.
             </span>
             <br/>
-            <a href='' target='_blank'>
+            <a href='https://github.com/dininduwara/how-rare' target='_blank' className='hover:underline'>
               View source on Github.
             </a>
           </div>
