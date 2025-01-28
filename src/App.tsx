@@ -277,10 +277,10 @@ export default function App() {
           </div>
 
           <div className='w-full'>
-            <h3 className='text-base mb-2'>
+            <h3 className='text-lg mb-2'>
               Sources
             </h3>
-            <div className='grid grid-cols-2 gap-1 w-full items-start text-sm text-blue-600 hover:text-blue-700'>
+            <div className='flex flex-col gap-1 w-full items-start text-sm text-blue-600 hover:text-blue-700'>
               <a href='https://data.gov.au/dataset/ds-dga-292a071b-71f0-48c4-8617-c2ee0ca1ff2e/details?q='
                  target='_blank'
                  id='rd2021'>
