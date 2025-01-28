@@ -26,7 +26,7 @@ export default function App() {
   const [selectedOption, setSelectedOption] = useState({make: parsed.make ?? null, model: parsed.model ?? null, label: parsed.make && parsed.model ? parsed.make + ' ' + parsed.model : 'Search Vehicles'});
   const [filterMYMin, setFilterMYMin] = useState(parsed.MYMin ?? null);
   const [filterMYMax, setFilterMYMax] = useState(parsed.MYMax ?? null);
-  const [query, setQuery] = useState(String);
+  const [links, setLinks] = useState({source: '#', share: '#'});
   const [options] = useState(cachedMakeModel.result.records.map(item => ({ make: item.make, model: item.model, label: item.make + ' ' + item.model})));
 
   useEffect(() => {
@@ -40,10 +40,11 @@ export default function App() {
         url = url + ' AND year_of_manufacture<=\''+filterMYMax+'\'';
 
       //Set local params
-      window.history.pushState(null, "How Rare", queryString.stringifyUrl({url: '/', query: { make: selectedOption.make, model: selectedOption.model, MYMin: filterMYMin, MYMax: filterMYMax, dataset: selectedDataset}}));
+      const shareUrl = queryString.stringifyUrl({url: '/', query: { make: selectedOption.make, model: selectedOption.model, MYMin: filterMYMin, MYMax: filterMYMax, dataset: selectedDataset}});
+      window.history.pushState(null, "How Rare", shareUrl);
 
       const detailedUrl = queryString.stringifyUrl({url: baseQuery, query: {sql: baseSelection + datasets[selectedDataset] + url}});
-      setQuery(detailedUrl)
+      setLinks({source: detailedUrl, share: shareUrl});
       axios.get(detailedUrl)
           .then(response => {
             const states = new Map([["ACT", 0], ["NSW", 0], ["NT", 0], ["QLD", 0], ["SA", 0], ["TAS", 0], ["VIC", 0], ["WA", 0]]);
@@ -116,7 +117,7 @@ export default function App() {
         <div className='max-w-2xl mx-auto flex flex-col gap-6 justify-center items-center min-h-screen py-10'>
           <a className='text-5xl font-bold text-violet-700 hover:underline transition ease-in-out delay-50 duration-200' href='/'>How rare is my car?</a>
           <p className='text-center w-full'>
-            An interface to visualise the data from BITRE's Road vehicles Australia, hosted on <a href="https://data.gov.au/home" target='_blank' className='text-blue-600'>data.gov.au</a>. <br/> Find out how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
+            An interface to search and visualise the data in Road vehicles Australia, hosted on <a href="https://data.gov.au/home" target='_blank' className='text-blue-600'>data.gov.au</a>. <br/> Find out how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
           </p>
           <div className='flex flex-col gap-4 text-black'>
             <div className='flex gap-4 justify-center'>
@@ -154,8 +155,25 @@ export default function App() {
               <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full' name="myMax" value={filterMYMax} onChange={e => setFilterMYMax(e.target.value)} placeholder='Model Year (MAX)'/>
             </div>
           </div>
-          <div className='w-full text-center text-lg'>
-            <span>Showing results for:</span> { query ?<a href={query} target='_blank' className='underline text-blue-600 hover:text-blue-700'>{selectedOption.label}</a>  : '' }
+          <div className='flex flex-row justify-center w-full text-center text-lg gap-2'>
+            <p>Showing results for:</p>
+            {
+              links.share != '#' ?
+                  <div className='flex gap-2 items-center'>
+                    <a href={links.share} target='_blank'
+                            className='underline text-violet-600 hover:text-violet-700'>
+                      {selectedOption.label}
+                    </a>
+                    <a href={links.source} target='_blank' className='underline text-sm text-violet-600 hover:text-violet-700 hover:cursor-pointer'>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                           stroke="currentColor" className="size-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+                      </svg>
+                    </a>
+                  </div>
+                  : ''
+            }
           </div>
           <div className='flex flex-col gap-5'>
 
