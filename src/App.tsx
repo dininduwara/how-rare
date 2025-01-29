@@ -9,8 +9,10 @@ import queryString from 'query-string';
 
 //Results from https://data.gov.au/data/api/action/datastore_search_sql?sql=SELECT%20DISTINCT%20make,%20model%20from%20%2236b9bb45-f0bd-4069-89ac-f43d3f24a689%22 saved locally to prevent unnecessary queries to data.gov.au
 import * as makeModelList from './assets/mm-list.json';
+import useWindowDimensions from "./useWindowDimensions.ts";
 
 export default function App() {
+  const { height, width } = useWindowDimensions();
   const parsed = queryString.parse(location.search);
 
   const datasets = { '2024': "\"2c35ff3d-1f49-4721-b79c-d0f35b2c4d04\"", '2023': "\"6f375468-5ab0-4bba-8d0a-32df267c2dbd\"", '2022': "\"e6588c5f-e65f-4a6a-99d1-fde1b7ea5201\"", '2021': "\"21619e31-c57d-4845-a9d4-24cd172f446d\""};
@@ -25,8 +27,8 @@ export default function App() {
 
   const [selectedDataset, setSelectedDataset] = useState(parsed.dataset ?? '2024');
   const [selectedOption, setSelectedOption] = useState({make: parsed.make ?? null, model: parsed.model ?? null, label: parsed.make && parsed.model ? parsed.make + ' ' + parsed.model : 'Search Vehicles'});
-  const [filterMYMin, setFilterMYMin] = useState(parsed.MYMin ?? null);
-  const [filterMYMax, setFilterMYMax] = useState(parsed.MYMax ?? null);
+  const [filterMYMin, setFilterMYMin] = useState(parsed.MYMin ?? '');
+  const [filterMYMax, setFilterMYMax] = useState(parsed.MYMax ?? '');
   const [links, setLinks] = useState({source: '#', share: '#'});
   const [options] = useState(makeModelList.result.records.map(item => ({ make: item.make, model: item.model, label: item.make + ' ' + item.model})));
 
@@ -35,9 +37,9 @@ export default function App() {
 
       //Query for detailed results
       let url = ' WHERE make=\''+selectedOption.make+'\' AND model=\''+selectedOption.model+'\''
-      if (filterMYMin)
+      if (filterMYMin && filterMYMin.trim() != "")
         url = url + ' AND year_of_manufacture>=\''+filterMYMin+'\'';
-      if (filterMYMax)
+      if (filterMYMax && filterMYMax.trim() != "")
         url = url + ' AND year_of_manufacture<=\''+filterMYMax+'\'';
 
       //Set local params
@@ -116,12 +118,12 @@ export default function App() {
   return (
       <>
         <div className='flex flex-col gap-6 justify-center items-center min-h-screen py-10'>
-          <a className='text-5xl font-black text-violet-700 hover:scale-101 transition ease-in-out delay-50 duration-200 uppercase font-display' href='/'>How rare is my car?</a>
+          <a className='text-4xl xl:text-5xl text-center font-black text-violet-700 hover:scale-101 transition ease-in-out delay-50 duration-200 uppercase font-display' href='/'>How rare is my car?</a>
           <p className='text-center w-full text-gray-800 font-medium text-[0.96rem]'>
             An interface to query and visualise the Road vehicles Australia data, hosted on <a href="https://data.gov.au/home" target='_blank' className='text-blue-600'>data.gov.au</a>. <br/> Find out how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
           </p>
           <div className='flex flex-col gap-4 text-black'>
-            <div className='flex gap-4 justify-center'>
+            <div className='flex flex-wrap gap-x-4 xl:justify-center'>
               <p>
                 Dataset :
               </p>
@@ -162,7 +164,7 @@ export default function App() {
               links.share != '#' ?
                   <div className='flex gap-2 items-center'>
                     <a href={links.share} target='_blank'
-                            className='underline text-violet-600 hover:text-violet-700'>
+                       className='underline text-violet-600 hover:text-violet-700'>
                       {selectedOption.label}
                     </a>
                     <a href={links.source} target='_blank' className='underline text-sm text-violet-600 hover:text-violet-700 hover:cursor-pointer'>
@@ -176,67 +178,94 @@ export default function App() {
                   : '...nothing'
             }
           </div>
-          <div className='flex flex-col gap-5'>
+          <div className='flex flex-col gap-5 w-full'>
 
-            <h2 className='text-lg -mb-3 flex justify-between items-center font-medium'>
-              <span className='font-display uppercase text-gray-800 font-semibold'>
+            <div className='xl:text-lg -mb-3 flex flex-col xl:flex-row justify-between xl:items-center font-medium'>
+              <h1 className='font-display uppercase text-gray-800 font-semibold'>
                 Breakdown by State (with total)
-              </span>
-                <span className='text-right text-xs text-gray-600'>
+              </h1>
+              <p className='xl:text-right text-xs text-gray-600'>
                 *As of 31 January, {selectedDataset}.
-              </span>
-            </h2>
+              </p>
+            </div>
             <div className="flex flex-col items-center gap-2">
-              <div className='rounded-sm border-2 border-violet-700'>
-                <table className=" w-full text-sm text-center">
-                  <thead className="text-sm uppercase">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
-                      ACT
-                    </th>
-                    <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
-                      NSW
-                    </th>
-                    <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
-                      NT
-                    </th>
-                    <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
-                      QLD
-                    </th>
-                    <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
-                      SA
-                    </th>
-                    <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
-                      TAS
-                    </th>
-                    <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
-                      VIC
-                    </th>
-                    <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
-                      WA
-                    </th>
-                    <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
-                      TOTAL
-                    </th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
+              <div className='w-full rounded-sm border-2 border-violet-700'>
+                <div className='hidden xl:flex '>
+                  <table className="w-full text-sm text-center">
+                    <thead className="text-sm uppercase">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                        ACT
+                      </th>
+                      <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
+                        NSW
+                      </th>
+                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                        NT
+                      </th>
+                      <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
+                        QLD
+                      </th>
+                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                        SA
+                      </th>
+                      <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
+                        TAS
+                      </th>
+                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                        VIC
+                      </th>
+                      <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
+                        WA
+                      </th>
+                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                        TOTAL
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      {
+                        results.map(item =>
+                            <td key={item.label + 'D'} className="px-6 py-4 odd:bg-slate-100">
+                              {item.value}
+                            </td>
+                        )
+                      }
+                      <td className="px-6 py-4 bg-slate-100 font-bold">
+                        {resultsTotal}
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className='flex xl:hidden'>
+                  <div className='w-full'>
                     {
                       results.map(item =>
-                          <td key={item.label} className="px-6 py-4 odd:bg-slate-100">
-                            {item.value}
-                          </td>
+                          <div key={item.label + 'M'} className="col-span-2 grid grid-cols-2 items-center odd: bg-violet-600 even:bg-violet-700 group">
+                            <div className="px-6 py-2 text-white font-bold text-center">
+                              {item.label}
+                            </div>
+                            <div className="px-6 py-2 text-center group-odd:bg-white group-even:bg-slate-100 ">
+                              {item.value}
+                            </div>
+                          </div>
                       )
                     }
-                    <td className="px-6 py-4 bg-slate-100 font-bold">
-                      {resultsTotal}
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
+                    <div className="grid grid-cols-2 font-bold bg-violet-600">
+                      <div className="px-6 py-2 text-white text-center">
+                        TOTAL
+                      </div>
+                      <div className="px-6 py-2 text-center bg-white">
+                        {resultsTotal}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
+              <div
+                  className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
                 <PieChart
                     colors={['#F87171', '#60A5FA', '#E879F9', '#A3E635', '#FBBF24', '#34D399', '#A78BFA', '#22D3EE']}
                     series={[
@@ -246,19 +275,20 @@ export default function App() {
                         faded: {innerRadius: 30, additionalRadius: -30, color: 'gray'},
                       },
                     ]}
-                    width={672}
-                    height={200}
+                    width={width < 600 ? (width * 0.8) : 672}
+                    height={width < 600 ? (width * 0.7) : 200}
                 />
               </div>
             </div>
-            <h2 className='text-lg -mb-3 flex justify-between items-center'>
-              <span className='font-display uppercase text-gray-800 font-semibold'>
+
+            <div className='xl:text-lg -mb-3 flex flex-col xl:flex-row justify-between xl:items-center font-medium'>
+              <h2 className='font-display uppercase text-gray-800 font-semibold'>
                 Breakdown by Model Year
-              </span>
-              <span className='text-right text-xs text-gray-600'>
+              </h2>
+              <p className='xl:text-right text-xs text-gray-600'>
                 *As of 31 January, {selectedDataset}.
-              </span>
-            </h2>
+              </p>
+            </div>
             <div
                 className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
               <LineChart
@@ -268,37 +298,38 @@ export default function App() {
                       data: resultsByYear.map(a => a.value), color: '#6D28D9'
                     },
                   ]}
-                  width={672}
+                  width={width < 600 ? (width * 0.8) : 672}
                   height={400}
               />
             </div>
-            <h2 className='text-lg -mb-3 flex justify-between items-center'>
-              <span className='font-display uppercase text-gray-800 font-semibold'>
+
+            <div className='xl:text-lg -mb-3 flex flex-col xl:flex-row justify-between xl:items-center font-medium'>
+              <h3 className='font-display uppercase text-gray-800 font-semibold'>
                 Change in Registered Vehicles
-              </span>
-                <span className='text-right text-xs text-gray-600'>
+              </h3>
+              <p className='xl:text-right text-xs text-gray-600'>
                 *As of 31 January, 2024.
-              </span>
-            </h2>
+              </p>
+            </div>
             <div
                 className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
               <LineChart
-                  xAxis={[{ scaleType: 'band', data:  resultsChangeByDataset.map(a => a.name) }]}
+                  xAxis={[{scaleType: 'band', data: resultsChangeByDataset.map(a => a.name)}]}
                   series={[
                     {
-                      data:  resultsChangeByDataset.map(a => a.value), color: '#6D28D9'
+                      data: resultsChangeByDataset.map(a => a.value), color: '#6D28D9'
                     },
                   ]}
-                  width={672}
+                  width={width < 600 ? (width * 0.8) : 672}
                   height={200}
               />
             </div>
           </div>
 
           <div className='w-full'>
-            <h3 className='text-lg font-display uppercase text-gray-800 font-semibold mb-2'>
+            <h4 className='xl:text-lg font-display uppercase text-gray-800 font-semibold mb-2'>
               Sources
-            </h3>
+            </h4>
             <div className='flex flex-col gap-1 w-full items-start text-sm text-blue-600 hover:text-blue-700'>
               <a href='https://data.gov.au/dataset/ds-dga-292a071b-71f0-48c4-8617-c2ee0ca1ff2e/details?q='
                  target='_blank'
