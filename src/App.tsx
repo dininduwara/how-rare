@@ -115,6 +115,14 @@ export default function App() {
     setSelectedOption(value);
   };
 
+  const customStyles = {
+    control: (base) => ({
+      ...base,
+      boxShadow: "none",
+      border: "none",
+    })
+  };
+
   return (
       <>
         <div className='flex flex-col gap-6 justify-center items-center min-h-screen py-10'>
@@ -148,10 +156,10 @@ export default function App() {
               </label>
             </div>
             <AsyncSelect cacheOptions loadOptions={loadOptions} defaultValue={selectedOption} defaultOptions onChange={handleChange}
-                         classNames={{
-                           control: () => 'rounded-sm p-1.5 border-none shadow-none',
-                           container: () => 'border-2 border-slate-200 rounded-sm'
-                         }}
+                         styles={customStyles} classNames={{
+              control: () => 'rounded-sm p-1.5 border-none shadow-none',
+              container: () => 'border-2 border-slate-200 rounded-sm'
+            }}
             />
             <div className='flex flex-row gap-2 justify-center items-center'>
               <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full' type="number" name="myMin" value={filterMYMin} onChange={e => setFilterMYMin(e.target.value)} placeholder='Model Year (MIN)'/>
