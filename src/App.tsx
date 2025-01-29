@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
@@ -7,7 +8,7 @@ import {PieChart} from "@mui/x-charts";
 import queryString from 'query-string';
 
 //Results from https://data.gov.au/data/api/action/datastore_search_sql?sql=SELECT%20DISTINCT%20make,%20model%20from%20%2236b9bb45-f0bd-4069-89ac-f43d3f24a689%22 saved locally to prevent unnecessary queries to data.gov.au
-import * as cachedMakeModel from './assets/cache.json';
+import * as makeModelList from './assets/mm-list.json';
 
 export default function App() {
   const parsed = queryString.parse(location.search);
@@ -27,7 +28,7 @@ export default function App() {
   const [filterMYMin, setFilterMYMin] = useState(parsed.MYMin ?? null);
   const [filterMYMax, setFilterMYMax] = useState(parsed.MYMax ?? null);
   const [links, setLinks] = useState({source: '#', share: '#'});
-  const [options] = useState(cachedMakeModel.result.records.map(item => ({ make: item.make, model: item.model, label: item.make + ' ' + item.model})));
+  const [options] = useState(makeModelList.result.records.map(item => ({ make: item.make, model: item.model, label: item.make + ' ' + item.model})));
 
   useEffect(() => {
     if (selectedOption.make && selectedOption.model){
@@ -74,16 +75,16 @@ export default function App() {
       ]).then(axios.spread((data2024, data2023, data2022, data2021) => {
         const years = new Map();
         data2024.data.result.records.forEach(function (value) {
-          years.set(2024, (years.get(2024) ?? 0) + (+value.no_vehicles));
+          years.set('2024', (years.get('2024') ?? 0) + (+value.no_vehicles));
         });
         data2023.data.result.records.forEach(function (value) {
-          years.set(2023, (years.get(2023) ?? 0) + (+value.no_vehicles));
+          years.set('2023', (years.get('2023') ?? 0) + (+value.no_vehicles));
         });
         data2022.data.result.records.forEach(function (value) {
-          years.set(2022, (years.get(2022) ?? 0) + (+value.no_vehicles));
+          years.set('2022', (years.get('2022') ?? 0) + (+value.no_vehicles));
         });
         data2021.data.result.records.forEach(function (value) {
-          years.set(2021, (years.get(2021) ?? 0) + (+value.no_vehicles));
+          years.set('2021', (years.get('2021') ?? 0) + (+value.no_vehicles));
         });
         setResultsChangeByDataset((Array.from(years, ([name, value]) => ({ name, value }))).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
       }));
@@ -114,10 +115,10 @@ export default function App() {
 
   return (
       <>
-        <div className='max-w-2xl mx-auto flex flex-col gap-6 justify-center items-center min-h-screen py-10'>
-          <a className='text-5xl font-bold text-violet-700 hover:underline transition ease-in-out delay-50 duration-200' href='/'>How rare is my car?</a>
-          <p className='text-center w-full'>
-            An interface to search and visualise the data in Road vehicles Australia, hosted on <a href="https://data.gov.au/home" target='_blank' className='text-blue-600'>data.gov.au</a>. <br/> Find out how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
+        <div className='flex flex-col gap-6 justify-center items-center min-h-screen py-10'>
+          <a className='text-5xl font-black text-violet-700 hover:scale-101 transition ease-in-out delay-50 duration-200 uppercase font-display' href='/'>How rare is my car?</a>
+          <p className='text-center w-full text-gray-800 font-medium text-[0.96rem]'>
+            An interface to query and visualise the Road vehicles Australia data, hosted on <a href="https://data.gov.au/home" target='_blank' className='text-blue-600'>data.gov.au</a>. <br/> Find out how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
           </p>
           <div className='flex flex-col gap-4 text-black'>
             <div className='flex gap-4 justify-center'>
@@ -156,7 +157,7 @@ export default function App() {
             </div>
           </div>
           <div className='flex flex-row justify-center w-full text-center text-lg gap-2'>
-            <p>Showing results for:</p>
+            <p>Showing results for</p>
             {
               links.share != '#' ?
                   <div className='flex gap-2 items-center'>
@@ -172,18 +173,18 @@ export default function App() {
                       </svg>
                     </a>
                   </div>
-                  : ''
+                  : '...nothing'
             }
           </div>
           <div className='flex flex-col gap-5'>
 
-            <h2 className='text-lg -mb-3 flex justify-between items-center'>
-            <span>
-              Breakdown by State (with total)
-            </span>
-              <span className='text-right text-xs text-gray-600'>
-              *As of 31 January, {selectedDataset}.
-            </span>
+            <h2 className='text-lg -mb-3 flex justify-between items-center font-medium'>
+              <span className='font-display uppercase text-gray-800 font-semibold'>
+                Breakdown by State (with total)
+              </span>
+                <span className='text-right text-xs text-gray-600'>
+                *As of 31 January, {selectedDataset}.
+              </span>
             </h2>
             <div className="flex flex-col items-center gap-2">
               <div className='rounded-sm border-2 border-violet-700'>
@@ -251,12 +252,12 @@ export default function App() {
               </div>
             </div>
             <h2 className='text-lg -mb-3 flex justify-between items-center'>
-            <span>
-              Breakdown by Model Year
-            </span>
+              <span className='font-display uppercase text-gray-800 font-semibold'>
+                Breakdown by Model Year
+              </span>
               <span className='text-right text-xs text-gray-600'>
-              *As of 31 January, {selectedDataset}.
-            </span>
+                *As of 31 January, {selectedDataset}.
+              </span>
             </h2>
             <div
                 className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
@@ -272,12 +273,12 @@ export default function App() {
               />
             </div>
             <h2 className='text-lg -mb-3 flex justify-between items-center'>
-            <span>
-              Change in Total Registered Vehicles Count (2021 to 2024)
-            </span>
-              <span className='text-right text-xs text-gray-600'>
-              *As of 31 January, 2024.
-            </span>
+              <span className='font-display uppercase text-gray-800 font-semibold'>
+                Change in Registered Vehicles
+              </span>
+                <span className='text-right text-xs text-gray-600'>
+                *As of 31 January, 2024.
+              </span>
             </h2>
             <div
                 className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
@@ -295,7 +296,7 @@ export default function App() {
           </div>
 
           <div className='w-full'>
-            <h3 className='text-lg mb-2'>
+            <h3 className='text-lg font-display uppercase text-gray-800 font-semibold mb-2'>
               Sources
             </h3>
             <div className='flex flex-col gap-1 w-full items-start text-sm text-blue-600 hover:text-blue-700'>
@@ -320,16 +321,6 @@ export default function App() {
                 4. Road vehicles Australia, January 2024
               </a>
             </div>
-          </div>
-
-          <div className='w-full text-gray-600 text-[0.78rem] text-center mt-6 -mb-6'>
-            <span>
-              Built over a couple of afternoons with React by a Laravel developer. Expect only bugs, not how to cook the perfect stake.
-            </span>
-            <br/>
-            <a href='https://github.com/dininduwara/how-rare' target='_blank' className='hover:underline'>
-              View source on Github.
-            </a>
           </div>
         </div>
       </>

@@ -1,1 +1,17 @@
 @import "tailwindcss";
+@font-face {
+    font-family: "Josefin Sans", serif;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Quicksand", serif;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    --font-sans: "Quicksand", sans-serif;
+    --font-display: "Josefin Sans", sans-serif;
+}
