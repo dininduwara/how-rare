@@ -154,8 +154,8 @@ export default function App() {
                          }}
             />
             <div className='flex flex-row gap-2 justify-center items-center'>
-              <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full' name="myMin" value={filterMYMin} onChange={e => setFilterMYMin(e.target.value)} placeholder='Model Year (MIN)'/>
-              <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full' name="myMax" value={filterMYMax} onChange={e => setFilterMYMax(e.target.value)} placeholder='Model Year (MAX)'/>
+              <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full' type="number" name="myMin" value={filterMYMin} onChange={e => setFilterMYMin(e.target.value)} placeholder='Model Year (MIN)'/>
+              <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full' type="number" name="myMax" value={filterMYMax} onChange={e => setFilterMYMax(e.target.value)} placeholder='Model Year (MAX)'/>
             </div>
           </div>
           <div className='flex flex-row justify-center w-full text-center text-lg gap-2'>
@@ -268,6 +268,7 @@ export default function App() {
                   className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
                 <PieChart
                     colors={['#F87171', '#60A5FA', '#E879F9', '#A3E635', '#FBBF24', '#34D399', '#A78BFA', '#22D3EE']}
+                    sx={{'&&': {touchAction: 'auto'}}}
                     series={[
                       {
                         data: results,
@@ -293,6 +294,7 @@ export default function App() {
                 className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
               <LineChart
                   xAxis={[{scaleType: 'band', data: resultsByYear.map(a => a.name)}]}
+                  sx={{'&&': {touchAction: 'auto'}}}
                   series={[
                     {
                       data: resultsByYear.map(a => a.value), color: '#6D28D9'
@@ -315,6 +317,7 @@ export default function App() {
                 className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
               <LineChart
                   xAxis={[{scaleType: 'band', data: resultsChangeByDataset.map(a => a.name)}]}
+                  sx={{'&&': {touchAction: 'auto'}}}
                   series={[
                     {
                       data: resultsChangeByDataset.map(a => a.value), color: '#6D28D9'
