@@ -119,11 +119,11 @@ export default function App() {
       <>
         <div className='flex flex-col gap-6 justify-center items-center min-h-screen py-10'>
           <a className='text-4xl xl:text-5xl text-center font-black text-violet-700 hover:scale-101 transition ease-in-out delay-50 duration-200 uppercase font-display' href='/'>How rare is my car?</a>
-          <p className='text-center w-full text-gray-800 font-medium text-[0.96rem]'>
+          <p className='text-center w-full text-gray-800 font-medium text-sm xl:text-[0.96rem]'>
             An interface to query and visualise the Road vehicles Australia data, hosted on <a href="https://data.gov.au/home" target='_blank' className='text-blue-600'>data.gov.au</a>. <br/> Find out how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
           </p>
           <div className='flex flex-col gap-4 text-black'>
-            <div className='flex flex-wrap gap-x-4 xl:justify-center'>
+            <div className='flex flex-wrap gap-x-4 gap-y-1 xl:justify-center items-center'>
               <p>
                 Dataset :
               </p>
