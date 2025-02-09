@@ -126,9 +126,15 @@ export default function App() {
   return (
       <>
         <div className='flex flex-col gap-6 justify-center items-center min-h-screen py-10'>
-          <a className='text-4xl xl:text-5xl text-center font-black text-violet-700 hover:scale-101 transition ease-in-out delay-50 duration-200 uppercase font-display' href='/'>How rare is my car?</a>
+          <a className='text-4xl xl:text-5xl text-center font-black text-violet-700 hover:scale-101 transition ease-in-out delay-50 duration-200 uppercase font-display'
+             href='/'>How rare is my car?</a>
           <p className='text-center w-full text-gray-800 font-medium text-sm xl:text-[0.96rem]'>
-            An interface to query and visualise the Road vehicles Australia data, hosted on <a href="https://data.gov.au/home" target='_blank' className='text-blue-600'>data.gov.au</a>. <br/> Find out how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
+            An interface to query and visualise the Road vehicles Australia data, hosted on
+            <a rel="noreferrer" href="https://data.gov.au/home" target='_blank' className='text-blue-600'> data.gov.au</a>. <br/> Get an idea of
+            how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
+          </p>
+          <p className='-mt-4 text-center w-full text-red-600 font-medium text-sm'>
+            *Please only use this tool to get a general overview of trends, as the data sources appear to have several inconsistencies.
           </p>
           <div className='flex flex-col gap-4 text-black'>
             <div className='flex flex-wrap gap-x-4 gap-y-1 xl:justify-center items-center'>
@@ -136,7 +142,8 @@ export default function App() {
                 Dataset :
               </p>
               <label>
-                <input type="radio" name="myRadio" value="2024" checked={selectedDataset == '2024'} onChange={e => setSelectedDataset(e.target.value)}  className='mr-1'/>
+                <input type="radio" name="myRadio" value="2024" checked={selectedDataset == '2024'}
+                       onChange={e => setSelectedDataset(e.target.value)} className='mr-1'/>
                 2024 <a href='#rd2024' className='text-xs'>[4]</a>
               </label>
               <label>
@@ -155,15 +162,20 @@ export default function App() {
                 2021 <a href='#rd2021' className='text-xs'>[1]</a>
               </label>
             </div>
-            <AsyncSelect cacheOptions loadOptions={loadOptions} defaultValue={selectedOption} defaultOptions onChange={handleChange}
+            <AsyncSelect cacheOptions loadOptions={loadOptions} defaultValue={selectedOption} defaultOptions
+                         onChange={handleChange}
                          styles={customStyles} classNames={{
               control: () => 'rounded-sm p-1.5 border-none shadow-none',
               container: () => 'border-2 border-slate-200 rounded-sm'
             }}
             />
             <div className='flex flex-row gap-2 justify-center items-center'>
-              <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full' type="number" name="myMin" value={filterMYMin} onChange={e => setFilterMYMin(e.target.value)} placeholder='Model Year (MIN)'/>
-              <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full' type="number" name="myMax" value={filterMYMax} onChange={e => setFilterMYMax(e.target.value)} placeholder='Model Year (MAX)'/>
+              <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full'
+                     type="number" name="myMin" value={filterMYMin} onChange={e => setFilterMYMin(e.target.value)}
+                     placeholder='Model Year (MIN)'/>
+              <input className='text-black placeholder-black p-3 rounded-sm border-2 border-slate-200 w-full'
+                     type="number" name="myMax" value={filterMYMax} onChange={e => setFilterMYMax(e.target.value)}
+                     placeholder='Model Year (MAX)'/>
             </div>
           </div>
           <div className='flex flex-row justify-center w-full text-center text-lg gap-2'>
@@ -175,7 +187,8 @@ export default function App() {
                        className='underline text-violet-600 hover:text-violet-700'>
                       {selectedOption.label}
                     </a>
-                    <a href={links.source} target='_blank' className='underline text-sm text-violet-600 hover:text-violet-700 hover:cursor-pointer'>
+                    <a href={links.source} target='_blank'
+                       className='underline text-sm text-violet-600 hover:text-violet-700 hover:cursor-pointer'>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" className="size-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -251,7 +264,8 @@ export default function App() {
                   <div className='w-full'>
                     {
                       results.map(item =>
-                          <div key={item.label + 'M'} className="col-span-2 grid grid-cols-2 items-center odd: bg-violet-600 even:bg-violet-700 group">
+                          <div key={item.label + 'M'}
+                               className="col-span-2 grid grid-cols-2 items-center odd: bg-violet-600 even:bg-violet-700 group">
                             <div className="px-6 py-2 text-white font-bold text-center">
                               {item.label}
                             </div>
