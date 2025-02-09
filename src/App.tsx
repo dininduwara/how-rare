@@ -134,7 +134,7 @@ export default function App() {
             how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
           </p>
           <p className='-mt-4 text-center w-full text-red-600 font-medium text-sm'>
-            *Please only use this tool to get a general overview of trends, as the data sources appear to have several inconsistencies.
+            *Only use this tool to get a general overview of trends, as the data sources appear to have several inconsistencies.
           </p>
           <div className='flex flex-col gap-4 text-black'>
             <div className='flex flex-wrap gap-x-4 gap-y-1 xl:justify-center items-center'>
