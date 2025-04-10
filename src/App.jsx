@@ -8,8 +8,8 @@ import {PieChart} from "@mui/x-charts";
 import queryString from 'query-string';
 
 //Results from https://data.gov.au/data/api/action/datastore_search_sql?sql=SELECT%20DISTINCT%20make,%20model%20from%20%2236b9bb45-f0bd-4069-89ac-f43d3f24a689%22 saved locally to prevent unnecessary queries to data.gov.au
-import * as makeModelList from './assets/mm-list.json';
-import useWindowDimensions from "./useWindowDimensions.ts";
+import * as makeModelList from '../assets/mm-list.json';
+import useWindowDimensions from "./useWindowDimensions.js";
 
 export default function App() {
   const { height, width } = useWindowDimensions();
@@ -93,7 +93,7 @@ export default function App() {
     }
   }, [selectedOption, filterMYMin, filterMYMax, selectedDataset]);
 
-  const filterMakeModel = (inputValue: string) => {
+  const filterMakeModel = (inputValue) => {
     if (inputValue)
       return options.filter((i) =>
           i.label.toLowerCase().includes(inputValue.toLowerCase())
@@ -103,8 +103,8 @@ export default function App() {
   };
 
   const loadOptions = (
-      inputValue: string,
-      callback: (options: never) => void
+      inputValue,
+      callback
   ) => {
     setTimeout(() => {
       callback(filterMakeModel(inputValue));
@@ -134,7 +134,7 @@ export default function App() {
             how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
           </p>
           <p className='-mt-4 text-center w-full text-red-600 font-medium text-sm'>
-            *Only use this tool to get a general overview of trends, as the data sources appear to have several inconsistencies.
+            *Only use this tool to get a general overview of trends as the data sources appear to have several inconsistencies.
           </p>
           <div className='flex flex-col gap-4 text-black'>
             <div className='flex flex-wrap gap-x-4 gap-y-1 xl:justify-center items-center'>
