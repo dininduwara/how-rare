@@ -125,19 +125,20 @@ export default function App() {
 
   return (
       <>
-        <div className='flex flex-col gap-6 justify-center items-center min-h-screen py-10'>
-          <a className='text-4xl xl:text-5xl text-center font-black text-violet-700 hover:scale-101 transition ease-in-out delay-50 duration-200 uppercase font-display'
-             href='/'>How rare is my car?</a>
-          <p className='text-center w-full text-gray-800 font-medium text-sm xl:text-[0.96rem]'>
+        <div className='flex flex-col gap-6 justify-center items-start min-h-screen py-10'>
+          <a className='text-2xl text-start font-black text-gray-700 transition ease-in-out delay-50 duration-200 uppercase font-display w-full' href='/'>
+              Australian Vehicle Registration Statistics
+          </a>
+          <p className='text-start w-full text-gray-800 font-medium text-sm xl:text-[0.96rem]'>
             An interface to query and visualise the Road vehicles Australia data, hosted on
             <a rel="noreferrer" href="https://data.gov.au/home" target='_blank' className='text-blue-600'> data.gov.au</a>. <br/> Get an idea of
             how many examples of your favourite car/motorbike/truck/etc are still registered in Australia.
           </p>
-          <p className='-mt-4 text-center w-full text-red-600 font-medium text-sm'>
-            *Only use this tool to get a general overview of trends as the data sources appear to have several inconsistencies.
+          <p className='-mt-4 text-start w-full text-blue-600 font-medium text-sm'>
+            DISCLAIMER: Only use this tool to get a general overview of trends as the data sources appear to have several inconsistencies.
           </p>
-          <div className='flex flex-col gap-4 text-black'>
-            <div className='flex flex-wrap gap-x-4 gap-y-1 xl:justify-center items-center'>
+          <div className='flex flex-col gap-4 text-black border-t border-gray-200 pt-4 w-full'>
+            <div className='flex flex-wrap gap-x-4 gap-y-1 xl:justify-start items-center'>
               <p>
                 Dataset :
               </p>
@@ -178,17 +179,17 @@ export default function App() {
                      placeholder='Model Year (MAX)'/>
             </div>
           </div>
-          <div className='flex flex-row justify-center w-full text-center text-lg gap-2'>
+          <div className='flex flex-row justify-start w-full text-start text-md gap-2'>
             <p>Showing results for</p>
             {
               links.share != '#' ?
                   <div className='flex gap-2 items-center'>
                     <a href={links.share} target='_blank'
-                       className='underline text-violet-600 hover:text-violet-700'>
+                       className='underline text-gray-600 hover:text-gray-700'>
                       {selectedOption.label}
                     </a>
                     <a href={links.source} target='_blank'
-                       className='underline text-sm text-violet-600 hover:text-violet-700 hover:cursor-pointer'>
+                       className='underline text-sm text-gray-600 hover:text-gray-700 hover:cursor-pointer'>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" className="size-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -210,36 +211,36 @@ export default function App() {
               </p>
             </div>
             <div className="flex flex-col items-center gap-2">
-              <div className='w-full rounded-sm border-2 border-violet-700'>
+              <div className='w-full rounded-sm border-2 border-gray-700'>
                 <div className='hidden xl:flex '>
                   <table className="w-full text-sm text-center">
                     <thead className="text-sm uppercase">
                     <tr>
-                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                      <th scope="col" className="px-6 py-3 bg-gray-700 text-white">
                         ACT
                       </th>
-                      <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
+                      <th scope="col" className="px-6 py-3 bg-gray-600 text-white">
                         NSW
                       </th>
-                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                      <th scope="col" className="px-6 py-3 bg-gray-700 text-white">
                         NT
                       </th>
-                      <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
+                      <th scope="col" className="px-6 py-3 bg-gray-600 text-white">
                         QLD
                       </th>
-                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                      <th scope="col" className="px-6 py-3 bg-gray-700 text-white">
                         SA
                       </th>
-                      <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
+                      <th scope="col" className="px-6 py-3 bg-gray-600 text-white">
                         TAS
                       </th>
-                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                      <th scope="col" className="px-6 py-3 bg-gray-700 text-white">
                         VIC
                       </th>
-                      <th scope="col" className="px-6 py-3 bg-violet-600 text-white">
+                      <th scope="col" className="px-6 py-3 bg-gray-600 text-white">
                         WA
                       </th>
-                      <th scope="col" className="px-6 py-3 bg-violet-700 text-white">
+                      <th scope="col" className="px-6 py-3 bg-gray-700 text-white">
                         TOTAL
                       </th>
                     </tr>
@@ -265,7 +266,7 @@ export default function App() {
                     {
                       results.map(item =>
                           <div key={item.label + 'M'}
-                               className="col-span-2 grid grid-cols-2 items-center odd: bg-violet-600 even:bg-violet-700 group">
+                               className="col-span-2 grid grid-cols-2 items-center odd: bg-gray-600 even:bg-gray-700 group">
                             <div className="px-6 py-2 text-white font-bold text-center">
                               {item.label}
                             </div>
@@ -275,7 +276,7 @@ export default function App() {
                           </div>
                       )
                     }
-                    <div className="grid grid-cols-2 font-bold bg-violet-600">
+                    <div className="grid grid-cols-2 font-bold bg-gray-600">
                       <div className="px-6 py-2 text-white text-center">
                         TOTAL
                       </div>
@@ -287,7 +288,7 @@ export default function App() {
                 </div>
               </div>
               <div
-                  className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
+                  className='flex justify-center items-center w-full border-2 border-gray-700 bg-slate-100 rounded-sm '>
                 <PieChart
                     colors={['#F87171', '#60A5FA', '#E879F9', '#A3E635', '#FBBF24', '#34D399', '#A78BFA', '#22D3EE']}
                     sx={{'&&': {touchAction: 'auto'}}}
@@ -313,7 +314,7 @@ export default function App() {
               </p>
             </div>
             <div
-                className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
+                className='flex justify-center items-center w-full border-2 border-gray-700 bg-slate-100 rounded-sm '>
               <LineChart
                   xAxis={[{scaleType: 'band', data: resultsByYear.map(a => a.name)}]}
                   sx={{'&&': {touchAction: 'auto'}}}
@@ -336,7 +337,7 @@ export default function App() {
               </p>
             </div>
             <div
-                className='flex justify-center items-center w-full border-2 border-violet-700 bg-slate-100 rounded-sm '>
+                className='flex justify-center items-center w-full border-2 border-gray-700 bg-slate-100 rounded-sm '>
               <LineChart
                   xAxis={[{scaleType: 'band', data: resultsChangeByDataset.map(a => a.name)}]}
                   sx={{'&&': {touchAction: 'auto'}}}
